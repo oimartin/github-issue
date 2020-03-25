@@ -18,4 +18,4 @@ jobs:
         with:
           python-version: '3.x'
           architecture: 'x64'
-        run: python ../../python_script.py
+        run: python python_script.py
