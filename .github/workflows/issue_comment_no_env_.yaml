@@ -6,6 +6,7 @@ on:
 
 jobs:
   my-job:
+  build:
     name: Say Hi
     runs-on: ubuntu-18.04
 
