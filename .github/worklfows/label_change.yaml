@@ -1,0 +1,10 @@
+name: Label Change Alert
+# This workflow is triggered on changes to labels on issues
+on: [label]
+
+jobs:
+  build:
+    name: Label adjustment
+    runs-on: ubuntu-18.04
+    steps:
+      #This step uses 
