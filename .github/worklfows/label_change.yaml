@@ -7,15 +7,15 @@ on:
     types: [deleted]
 
 jobs:
-  build:
-
-  - name: Issue and label hello
+  my-job:
+    name: Issue and label hello
     runs-on: ubuntu-18.04
 
     steps:
+      - name: Print hello
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1.2.0
         with:
           python-version: '3.x'
           architecture: 'x64'
-        run: python python_script.py
+      - run: python python_script.py
