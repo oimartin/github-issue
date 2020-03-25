@@ -1,0 +1,22 @@
+name: Issue Comment alert
+# This workflow is triggered on changes to labels on issues
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  my-job:
+    name: Say Hi
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Print Hi
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1.2.0
+        env:
+        MY_VAR: Hi there! My name is
+        FIRST_NAME: Mona
+        MIDDLE_NAME: The
+        LAST_NAME: Octocat
+        run: |
+          echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
