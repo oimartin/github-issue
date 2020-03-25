@@ -1,0 +1,21 @@
+name: Label Change Alert
+# This workflow is triggered on changes to labels on issues
+on:
+  issues:
+    types: [opened, labeled]
+  label:
+    types: [deleted]
+
+jobs:
+  build:
+
+  - name: Issue and label hello
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1.2.0
+        with:
+          python-version: '3.x'
+          architecture: 'x64'
+        run: python ../../python_script.py
