@@ -1,6 +1,10 @@
 name: Label Change Alert
 # This workflow is triggered on changes to labels on issues
-on: [push]
+on:
+  issues:
+    types: [opened, labeled]
+  label:
+    types: [deleted]
 
 jobs:
   build:
@@ -14,6 +18,7 @@ jobs:
           python-version: '3.x'
           architecture: 'x64'
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: git actions/checkout@v2
       - name: Hello world
         run : python python_script.py
+        
