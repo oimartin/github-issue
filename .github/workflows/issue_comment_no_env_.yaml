@@ -6,7 +6,6 @@ on:
 
 jobs:
   my-job:
-  build:
     name: Say Hi
     runs-on: ubuntu-18.04
 
@@ -16,10 +15,10 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v1.2.0
         env:
-        MY_VAR: Hi there! My name is
-        FIRST_NAME: Mona
-        MIDDLE_NAME: The
-        LAST_NAME: Octocat
+          MY_VAR: Hi there! My name is
+          FIRST_NAME: Mona
+          MIDDLE_NAME: The
+          LAST_NAME: Octocat
       - name: show  
         run: |
           echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
