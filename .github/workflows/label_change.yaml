@@ -7,7 +7,6 @@ on:
     types: [deleted]
 
 jobs:
-  my-job:
   build:
     name: Issue and label hello
     runs-on: ubuntu-18.04
