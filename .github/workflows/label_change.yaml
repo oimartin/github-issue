@@ -19,4 +19,5 @@ jobs:
           architecture: 'x64'
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Hello world
         run : python python_script.py
