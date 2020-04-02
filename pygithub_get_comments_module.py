@@ -1,4 +1,3 @@
-# import dependencies
 from github import Github
 import re
 import argparse
@@ -8,7 +7,8 @@ def get_issue_id_and_token():
     parser = argparse.ArgumentParser(
         description='comments from gitHub issues')
     parser.add_argument(
-        "--organization", default='dictyBase', help='github organization name') 
+        "--organization", default='dictyBase',
+        help='github organization name')
     parser.add_argument(
         '--repository', default='Stock-Center-Orders',
         help='github repository name')
@@ -17,19 +17,16 @@ def get_issue_id_and_token():
         help='need issue id to continue')
     parser.add_argument(
         '--token', required=True, help='github personal token')
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
-# Connect to learn-github-action repo
-def connect_token_pyGithub(access_token):
-    connect = Github(access_token)
-    learn_github_action = connect.get_repo("dictybase-playground/learn-github-action") 
-    return learn_github_action
-    
+def github_repo(args):
+    connect = Github(args.token)
+    return connect.get_repo(f"{args.organization}/{args.repository}")
 
-def getting_issue_comments(learn_github_action, issue_id):
-    # Loop through all issues
+
+
+def getting_issue_comments(repo, issue_id):
     for issue in learn_github_action.get_issues(state='open'):
         
         # If issue id entered matches on of the open issue ids
