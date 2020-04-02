@@ -1,11 +1,13 @@
 name: Greet Everyone
 # This workflow is triggered on pushes to the repository.
-on: [push]
+on:
+  label:
+    types: [created]
 
 jobs:
   build:
     # Job name is Greeting
-    name: Greeting
+    name: Change in Labels
     # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
