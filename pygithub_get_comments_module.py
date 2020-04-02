@@ -3,7 +3,7 @@ import re
 import argparse
 
 
-def get_issue_id_and_token():
+def parse_cmdline():
     parser = argparse.ArgumentParser(
         description='comments from gitHub issues')
     parser.add_argument(
@@ -25,37 +25,23 @@ def github_repo(args):
     return connect.get_repo(f"{args.organization}/{args.repository}")
 
 
+def issue_comments(repo, id):
+    issue = repo.get_issue(number=id)
+    print(f"This is the first comment of {issue.id}: {issue.body}")
+    if '@' in issue.body:
+        emails = re.findall('\\S+@\\S+', issue.body)
+        print(f"This is an email/s, {emails}, for issue id: {issue.id}")
+    else:
+        print(f"There are no emails in the first comment of {issue.id}")
+    for comment in issue.get_comments():
+        print(f"comments of {issue.id}: {comment.id} - {comment.body}")
 
-def getting_issue_comments(repo, issue_id):
-    for issue in learn_github_action.get_issues(state='open'):
-        
-        # If issue id entered matches on of the open issue ids
-        if issue_id == issue.id:
-            
-            # Print just the issue id and body of first comment
-            print(f"This is the first comment of {issue.id}: {issue.body}")
-
-        # See if issue body has an @ to find an email
-            if '@' in issue.body:
-                
-                # Find emails and store in list
-                emails = re.findall('\S+@\S+', issue.body)
-                print(f"This is an email/s, {emails}, for issue id: {issue.id}")
-            else:
-                print(f"There are no emails in the first comment of {issue.id}")
-            
-        # Loop through all comments of specific issue
-            for comment in issue.get_comments():
-
-                # Print issue id, comment id, and the following comments
-                print(f"These are the following comments of {issue.id}: {comment.id} - {comment.body}")
-            else:
-                print(f"There are no additional comments for {issue.id}")
 
 def main():
-    issue_id, access_token = get_issue_id_and_token()
-    learn_github_action = connect_token_pyGithub(access_token)
-    getting_issue_comments(learn_github_action, issue_id)
+    args = parse_cmdline()
+    repo = github_repo(args)
+    issue_comments(repo, args.issue-id)
+
 
 if __name__ == "__main__":
     main()
