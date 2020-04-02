@@ -8,27 +8,30 @@ def get_issue_id_and_token():
     parser = argparse.ArgumentParser(description='Get comments from GitHub issues')
     parser.add_argument('issue_id', type=int, help='need issue id to continue')
     parser.add_argument('GitHub_token', type=str, help='Put in personal token')
-
     args = parser.parse_args()
+
+    # Rename variables to be used later
     issue_id = args.issue_id
     access_token = args.GitHub_token
 
-    print(f"main() worked")
     return issue_id, access_token
 
 # Connect to learn-github-action repo
 def connect_token_pyGithub(access_token):
     connect = Github(access_token)
     learn_github_action = connect.get_repo("dictybase-playground/learn-github-action") 
-    print(f"connect_token_pyGithub() worked")
     return learn_github_action
     
 
 def getting_issue_comments(learn_github_action, issue_id):
     # Loop through all issues
     for issue in learn_github_action.get_issues(state='open'):
-        print(f"This is the issue.id or from the for loop used {issue.id}")
+        
+        # If issue id entered matches on of the open issue ids
         if issue_id == issue.id:
+            
+            # Print just the issue id and body of first comment
+            print(f"This is the first comment of {issue.id}: {issue.body}")
 
         # See if issue body has an @ to find an email
             if '@' in issue.body:
@@ -36,15 +39,16 @@ def getting_issue_comments(learn_github_action, issue_id):
                 # Find emails and store in list
                 emails = re.findall('\S+@\S+', issue.body)
                 print(f"This is an email/s, {emails}, for issue id: {issue.id}")
+            else:
+                print(f"There are no emails in the first comment of {issue.id}")
             
-        # Print just the issue id and body of first comment
-            print(f"This is the first comment of {issue.id}: {issue.body}")
-
         # Loop through all comments of specific issue
             for comment in issue.get_comments():
 
                 # Print issue id, comment id, and the following comments
                 print(f"These are the following comments of {issue.id}: {comment.id} - {comment.body}")
+            else:
+                print(f"There are no additional comments for {issue.id}")
 
 def main():
     issue_id, access_token = get_issue_id_and_token()
