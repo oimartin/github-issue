@@ -26,6 +26,11 @@ def github_repo(args):
 
 
 def issue_comments(repo, id):
+    """output issue content
+    Arguments:
+        repo {object} -- github repository api object
+        id {string} -- issue id
+    """
     issue = repo.get_issue(number=id)
     print(f"This is the first comment of {issue.id}: {issue.body}")
     if '@' in issue.body:
