@@ -3,18 +3,23 @@ from github import Github
 import re
 import argparse
 
-# Use argeparse to set up issue_id to search and GitHub access token to connect with
+
 def get_issue_id_and_token():
-    parser = argparse.ArgumentParser(description='Get comments from GitHub issues')
-    parser.add_argument('issue_id', type=int, help='need issue id to continue')
-    parser.add_argument('GitHub_token', type=str, help='Put in personal token')
+    parser = argparse.ArgumentParser(
+        description='comments from gitHub issues')
+    parser.add_argument(
+        "--organization", default='dictyBase', help='github organization name') 
+    parser.add_argument(
+        '--repository', default='Stock-Center-Orders',
+        help='github repository name')
+    parser.add_argument(
+        '--issue-id', type=int, required=True,
+        help='need issue id to continue')
+    parser.add_argument(
+        '--token', required=True, help='github personal token')
     args = parser.parse_args()
+    return args
 
-    # Rename variables to be used later
-    issue_id = args.issue_id
-    access_token = args.GitHub_token
-
-    return issue_id, access_token
 
 # Connect to learn-github-action repo
 def connect_token_pyGithub(access_token):
