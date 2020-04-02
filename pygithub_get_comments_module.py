@@ -45,7 +45,7 @@ def issue_comments(repo, id):
 def main():
     args = parse_cmdline()
     repo = github_repo(args)
-    issue_comments(repo, args.issue-id)
+    issue_comments(repo, args.issue_id)
 
 
 if __name__ == "__main__":
