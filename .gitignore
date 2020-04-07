@@ -3,3 +3,4 @@ __pycache__/
 .ipynb_checkpoints/
 config.py
 user_input_issue_more_case_uses.py
+.mypy_cache/
