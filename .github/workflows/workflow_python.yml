@@ -1,3 +1,5 @@
+name: Python workflow
+
 on:
   label:
     types: [created, deleted]
