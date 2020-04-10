@@ -27,4 +27,4 @@ jobs:
           pip install -r requirements.txt
       - name: Run python script
         run: |
-          python pygithub_get_comments_module.py
+          python pygithub_get_comments_module.py --organization dictybase-playground --repository learn-github-action --issue-id ${{ github.event.issue.number }} --token 6edba910fdc72c7f14edde58e8a1a06950b76b67
