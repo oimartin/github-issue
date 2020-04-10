@@ -1,11 +1,12 @@
 name: Python workflow
 
 on:
-  label:
-    types: [created, deleted]
+  issues:
+    types: [labeled, unlabeled]
 
 jobs:
   build:
+    if: github.event.label.name == 'invalid'
     runs-on: ubuntu-latest
     strategy:
       matrix:

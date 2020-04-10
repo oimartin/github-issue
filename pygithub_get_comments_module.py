@@ -27,8 +27,12 @@ def parse_cmdline():
     parser.add_argument(
         '--issue-id', type=int, required=True,
         help='need issue id to continue')
+    parser.addargument(
+        '--label', required=True,
+        help='need a label to continue')
     parser.add_argument(
-        '--token', required=True, help='github personal token')
+        '--token',
+        help='github personal token')
     return parser.parse_args()
 
 
@@ -38,13 +42,10 @@ def github_repo(args):
     Returns:
         --org/repo -- info for API connect
 
+
     """
-    try:
-        connect = Github(args.token)
-        return connect.get_repo(f"{args.organization}/{args.repository}")
-    except ValueError:
-        print(f"Could not connect to repository.")
-        print(f"Check spelling of org and repo.")
+    connect = Github(args.token)
+    return connect.get_repo(f"{args.organization}/{args.repository}")
 
 
 def issue_comments(repo, id):
@@ -56,14 +57,18 @@ def issue_comments(repo, id):
 
     """
     issue = repo.get_issue(number=id)
-    print(f"This is the first comment of {issue.id}: {issue.body}")
     if '@' in issue.body:
         emails = re.findall('\\S+@\\S+', issue.body)
-        print(f"This is an email/s, {emails}, for issue id: {issue.id}")
-    else:
-        print(f"There are no emails in the first comment of {issue.id}")
-    for comment in issue.get_comments():
-        print(f"comments of {issue.id}: {comment.id} - {comment.body}")
+        shipping_email = emails[0]
+        billing_email = emails[1]
+
+    order_line = re.split("\n+", issue.body)[1]
+    order_id = re.findall(r'\d+', order_line)[0]
+
+    return shipping_email, billing_email, order_id
+
+    # else:
+    #     print(f"There are no emails in the first comment of {issue.id}")
 
 
 def main():
