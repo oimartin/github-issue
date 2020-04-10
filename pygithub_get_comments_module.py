@@ -27,10 +27,10 @@ def parse_cmdline():
     parser.add_argument(
         '--issue-id', type=int, required=True,
         help='need issue id to continue')
-    parser.addargument(
+    parser.add_argument(
         '--label',
         help='need a label to continue')
-    parser.addargument(
+    parser.add_argument(
         '--token',
         help='github personal token')
     return parser.parse_args()
