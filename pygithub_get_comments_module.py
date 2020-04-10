@@ -25,14 +25,9 @@ def parse_cmdline():
         '--repository', default='Stock-Center-Orders',
         help='github repository name')
     parser.add_argument(
-        '--issue-id', type=int, required=True,
-        help='need issue id to continue')
+        '--issue-id', type=int, required=True)
     parser.add_argument(
-        '--label',
-        help='need a label to continue')
-    parser.add_argument(
-        '--token',
-        help='github personal token')
+        '--token', required=True, help='github personal token')
     return parser.parse_args()
 
 
@@ -41,7 +36,6 @@ def github_repo(args):
 
     Returns:
         --org/repo -- info for API connect
-
 
     """
     connect = Github(args.token)
@@ -52,8 +46,8 @@ def issue_comments(repo, id):
     """Output issue content.
 
     Arguments:
-        repo {object} -- github repository api object
-        id {string} -- issue id
+        repo -- github repository api object
+        id -- issue id
 
     """
     issue = repo.get_issue(number=id)
@@ -65,6 +59,9 @@ def issue_comments(repo, id):
     order_line = re.split("\n+", issue.body)[1]
     order_id = re.findall(r'\d+', order_line)[0]
 
+    print(f"shipping email - {shipping_email}")
+    print(f"billing email - {billing_email}")
+    print(f"order id - {order_id}")
     return shipping_email, billing_email, order_id
 
     # else:
