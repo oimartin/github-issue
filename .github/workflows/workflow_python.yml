@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    if: github.event.label.name == 'invalid'
+    if: github.event.label.name == 'invalid' || github.event.label.name == 'bug'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,4 +27,4 @@ jobs:
           pip install -r requirements.txt
       - name: Run python script
         run: |
-          python pygithub_get_comments_module.py --organization dictybase-playground --repository learn-github-action --issue-id ${{ github.event.issue.number }} --label invalid --token 0b87ee3e73b29a1055fb5d365420c91a8338409a
+          python print(hello world)
