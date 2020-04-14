@@ -20,6 +20,9 @@ jobs:
           echo ${{ github.event.issue.labels }}
           echo ${{ github.event_name }}
           echo ${{ github.event.issue[1].name }}
+          echo ${{ github.event.issue.labels.name }}
+          echo ${{ github.event.issue.labels[0] }}
+          echo ${{ github.event.issue.labels[1] }}
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
