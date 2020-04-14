@@ -25,7 +25,7 @@ def parse_cmdline():
         '--repository', default='Stock-Center-Orders',
         help='github repository name')
     parser.add_argument(
-        '--issue-id', type=int, required=True)
+        '--issue_id', type=int, required=True)
     parser.add_argument(
         '--label', required=False)
     parser.add_argument(
@@ -44,7 +44,7 @@ def github_repo(args):
     return connect.get_repo(f"{args.organization}/{args.repository}")
 
 
-def issue_comments(repo, id):
+def issue_comments(repo, id, label):
     """Output issue content.
 
     Arguments:
@@ -53,6 +53,8 @@ def issue_comments(repo, id):
 
     """
     issue = repo.get_issue(number=id)
+    trigger_label = repo.get_label(label)
+
     if '@' in issue.body:
         emails = re.findall('\\S+@\\S+', issue.body)
         shipping_email = emails[0]
@@ -61,13 +63,7 @@ def issue_comments(repo, id):
     order_line = re.split("\n+", issue.body)[1]
     order_id = re.findall(r'\d+', order_line)[0]
 
-    print(f"shipping email - {shipping_email}")
-    print(f"billing email - {billing_email}")
-    print(f"order id - {order_id}")
-    return shipping_email, billing_email, order_id
-
-    # else:
-    #     print(f"There are no emails in the first comment of {issue.id}")
+    return shipping_email, billing_email, order_id, trigger_label
 
 
 def main():
@@ -80,7 +76,7 @@ def main():
     """
     args = parse_cmdline()
     repo = github_repo(args)
-    issue_comments(repo, args.issue_id)
+    issue_comments(repo, args.issue_id, args.label)
 
 
 if __name__ == "__main__":

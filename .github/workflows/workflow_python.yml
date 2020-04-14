@@ -17,7 +17,9 @@ jobs:
       - name: Get details
         run: |
           echo ${{ github.event.issue.number }}
-          echo ${{ github.event.issues.labels }}
+          echo ${{ github.event.issue.labels }}
+          echo ${{ github.event_name }}
+          echo ${{ github.event.issue[1].name }}
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
