@@ -5,6 +5,7 @@ class InvoiceHTMLParser(HTMLParser):
     def __init__(self):
         self.nth_strong_tag = 0
         self.order_id = ''
+        HTMLParser.__init__(self)
 
     def handle_endtag(self, tag):
         if tag == 'strong':
@@ -12,7 +13,8 @@ class InvoiceHTMLParser(HTMLParser):
 
     def handle_data(self, data):
         if self.nth_strong_tag == 2:
-            self.order_id = data
+            if not self.order_id:
+                self.order_id = data
 
-    def order_id(self):
+    def get_order_id(self):
         return self.order_id.lstrip()
