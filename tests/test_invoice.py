@@ -38,4 +38,3 @@ class TestInvoiceHTMLParser(unittest.TestCase):
         self.assertEqual(
             self.parser.consumer_email(),
             'abc@abc.edu')
-

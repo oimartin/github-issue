@@ -18,7 +18,7 @@ def parse_cmdline():
         '--repository', default='Stock-Center-Orders',
         help='github repository name')
     parser.add_argument(
-        '--issue_id', type=int, required=True)
+        '--issue-id', type=int, required=True)
     parser.add_argument(
         '--label', required=False)
     parser.add_argument(

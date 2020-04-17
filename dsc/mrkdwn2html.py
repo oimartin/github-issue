@@ -20,7 +20,7 @@ def mrkdwn_html(body):
     """Convert issue body to html.
 
     Arguments:
-        body -- the markdown content of issue body 
+        body -- the markdown content of issue body
 
     Returns:
         issue_body_html -- in html format
