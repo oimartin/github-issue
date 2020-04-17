@@ -20,6 +20,8 @@ def main():
     parser = InvoiceHTMLParser()
     parser.feed(html)
     print(f'order id:{parser.get_order_id()}')
+    print(f'shipping email:{parser.shipping_email()}')
+    print(f'consumer email:{parser.consumer_email()}')
 
 
 if __name__ == "__main__":
