@@ -1,17 +1,13 @@
 """Connect to GitHub Repository."""
-import cmdline_arg
 from github import Github
 
 
-def github_repo():
+def github_repo(token, organization, repository):
     """Connect to Github repo.
 
     Returns:
         --org/repo -- info for API connect
 
     """
-    token = cmdline_arg.parse_cmdline().args.token
     connect = Github(token)
-    organization = cmdline_arg.parse_cmdline().args.organization
-    repository = cmdline_arg.parse_cmdline().args.repository
-    return connect.get_repo(organization/repository)
+    return connect.get_repo(f'{organization}/{repository}')
