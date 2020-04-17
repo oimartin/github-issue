@@ -1,7 +1,7 @@
 """Use PyGithub to connect to Github API v3."""
-import cmdline_arg
-import connect_repo
-import mrkdwn_html
+import dsc.cmdline_arg
+import dsc.connect_repo
+import dsc.mrkdwn_html
 from tests.test_invoice import TestInvoiceHTMLParser
 
 
@@ -19,5 +19,16 @@ def main():
     TestInvoiceHTMLParser(html)
 
 
+def test_all_output():
+    """Test suite - grabbing info from html."""
+    suite = unittest.TestSuite()
+    suite.addTest(TestInvoiceHTMLParser('test_order_id'))
+    suite.addTest(TestInvoiceHTMLParser('shipping_email'))
+    suite.addTest(TestInvoiceHTMLParser('test_consumer_email'))
+    return suite
+
+
 if __name__ == "__main__":
     main()
+    runner = unittest.TextTestRunner()
+    runner.run(suite())

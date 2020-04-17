@@ -1,7 +1,7 @@
 """Parse html."""
 import unittest
 from dsc.invoice import InvoiceHTMLParser
-import mrkdwn_html
+import dsc.mrkdwn_html
 
 
 class TestInvoiceHTMLParser(unittest.TestCase):
