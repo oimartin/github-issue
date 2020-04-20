@@ -45,10 +45,10 @@ class InvoiceHTMLParser(HTMLParser):
         """Retrieve order id."""
         return self.order_id.strip()
 
-    def shipping_email(self):
+    def get_shipping_email(self):
         """Retrieve shipping email."""
         return self._shipto_email.strip()
 
-    def consumer_email(self):
+    def get_consumer_email(self):
         """Retrieve consumer email."""
         return self._consumer_email.strip()
