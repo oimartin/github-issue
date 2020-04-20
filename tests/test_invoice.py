@@ -18,23 +18,35 @@ class TestInvoiceHTMLParser(unittest.TestCase):
         self.parser.feed(self.html)
 
     def test_order_id(self):
-        self.assertEqual(self.parser.get_order_id(), '890348')
+        self.assertEqual(
+            self.parser.get_order_id(),
+            '890348')
 
     def test_shipping_email(self):
         self.assertEqual(
-            self.parser.shipping_email(),
+            self.parser.get_shipping_email(),
             'david.knecht@uconn.edu')
 
     def test_consumer_email(self):
         self.assertEqual(
-            self.parser.consumer_email(),
+            self.parser.get_consumer_email(),
             'abc@abc.edu')
 
-    def test_all(self):
-        self.assertEqual(self.parser.get_order_id(), '890348')
+    def test_user_name(self):
         self.assertEqual(
-            self.parser.shipping_email(),
+            self.parser.get_user_name(),
+            'David Knecht1')
+
+    def test_all(self):
+        self.assertEqual(
+            self.parser.get_order_id(),
+            '890348')
+        self.assertEqual(
+            self.parser.get_shipping_email(),
             'david.knecht@uconn.edu')
         self.assertEqual(
-            self.parser.consumer_email(),
-            'abc@abc.edu')
+            self.parser.get_consumer_email(),
+            'abc@abc.edu'),
+        self.assertEqual(
+            self.parser.get_user_name(),
+            'David Knecht1')
