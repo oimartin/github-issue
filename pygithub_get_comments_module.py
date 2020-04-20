@@ -12,6 +12,8 @@ def main():
         parse_cmdline() -- command-line interface
         github_repo -- connect to org/repo
         issue_comments -- output issue content
+    Returns:
+        order_info -- order id, shipping and consumer emails
     """
     args = parse_cmdline()
     repo = github_repo(args.token, args.organization, args.repository)
@@ -19,9 +21,11 @@ def main():
     html = mrkdwn_html(mrkdwn)
     parser = InvoiceHTMLParser()
     parser.feed(html)
-    print(f'order id:{parser.get_order_id()}')
-    print(f'shipping email:{parser.shipping_email()}')
-    print(f'consumer email:{parser.consumer_email()}')
+
+    order_info = {'order_id': parser.get_order_id(),
+                    'shipping_email': parser.get_shipping_email(),
+                    'consumer_email': parser.get_consumer_email()}
+    return order_info
 
 
 if __name__ == "__main__":
