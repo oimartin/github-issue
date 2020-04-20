@@ -50,7 +50,7 @@ class InvoiceHTMLParser(HTMLParser):
         return self.order_id.strip()
 
     def get_user_name(self):
-        """Retrieve user shipping name"""
+        """Retrieve user shipping name."""
         return self._user_name.strip()
 
     def get_shipping_email(self):
