@@ -1,1 +1,5 @@
 testing.ipynb
+.vscode/
+__pycache__/
+dsc/.mypy_chache/
+.mypy_chache/
