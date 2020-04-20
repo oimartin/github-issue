@@ -23,8 +23,8 @@ def main():
     parser.feed(html)
 
     order_info = {'order_id': parser.get_order_id(),
-                    'shipping_email': parser.get_shipping_email(),
-                    'consumer_email': parser.get_consumer_email()}
+                  'shipping_email': parser.get_shipping_email(),
+                  'consumer_email': parser.get_consumer_email()}
     return order_info
 
 
