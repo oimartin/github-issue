@@ -3,6 +3,9 @@ from dsc.cmdline import parse_cmdline
 from dsc.connect import github_repo
 from dsc.mrkdwn2html import issue_body, mrkdwn_html
 from dsc.invoice import InvoiceHTMLParser
+from dsc.dict import dict_order_info
+from dsc.email import send_email
+from config import key
 
 
 def main():
@@ -21,13 +24,12 @@ def main():
     html = mrkdwn_html(mrkdwn)
     parser = InvoiceHTMLParser()
     parser.feed(html)
-
-    order_info = {'order_id': parser.get_order_id(),
-                  'user_name': parser.get_user_name(),
-                  'shipping_email': parser.get_shipping_email(),
-                  'consumer_email': parser.get_consumer_email()}
-    print(order_info)
-    return order_info
+    order = dict_order_info(parser.get_order_id(), parser.get_user_name(),
+                            parser.get_shipping_email(), args.label)
+    email_msg = send_email(order['id'], order['user_name'],
+                           order['shipping_email'],
+                           order['trigger_label'], key)
+    return email_msg
 
 
 if __name__ == "__main__":
