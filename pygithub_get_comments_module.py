@@ -5,7 +5,6 @@ from dsc.mrkdwn2html import issue_body, mrkdwn_html
 from dsc.invoice import InvoiceHTMLParser
 from dsc.dict import dict_order_info
 from dsc.email import send_email
-from config import key
 
 
 def main():
@@ -25,10 +24,13 @@ def main():
     parser = InvoiceHTMLParser()
     parser.feed(html)
     order = dict_order_info(parser.get_order_id(), parser.get_user_name(),
-                            parser.get_shipping_email(), args.label)
+                            parser.get_shipping_email(), args.label,
+                            args.key, args.domain)
     email_msg = send_email(order['id'], order['user_name'],
                            order['shipping_email'],
-                           order['trigger_label'], key)
+                           order['trigger_label'],
+                           order['mailgun_key'],
+                           order['mailgun_domain'])
     return email_msg
 
 
