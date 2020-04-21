@@ -1,0 +1,20 @@
+import unittest
+from dsc.email import send_email
+from tests.dicty_order_data import info
+import requests
+from mock import patch, MagicMock
+
+
+class MailgunTestBase(unittest.TestCase):
+    def setUpClass(self):
+        self.order = info.order
+
+    def setUp(self):
+        self.api_call = "https://api.mailgun.net/v3/" + \
+            self.order['mailgun_domain'] + "/messages"
+        self.connect = ("api", self.order['mailgun_key'])
+
+    def test_connect(self):
+        self.assertTrue(
+            requests.post(self.api_call, auth=self.connect).status_code == 200
+        )
