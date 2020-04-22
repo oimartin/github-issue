@@ -5,6 +5,7 @@ import requests
 
 
 class MailgunTestBase(unittest.TestCase):
+    @classmethod
     def setUpClass(self):
         self.order_id = info.order['id']
         self.user_name = info.order['user_name']
@@ -40,4 +41,13 @@ class MailgunTestBase(unittest.TestCase):
               Best regards,
               The DSC Team
               dictystocks@northwestern.edu"""}
+        )
+
+    def test_all(self):
+        self.email = send_email(
+            self.order_id, self.user_name, self.shipping_email, self.label,
+            self.key, self.domain)
+
+        self.assertEqual(
+            self.connect.status_code, '200'
         )
