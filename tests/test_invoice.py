@@ -46,7 +46,7 @@ class TestInvoiceHTMLParser(unittest.TestCase):
             'david.knecht@uconn.edu')
         self.assertEqual(
             self.parser.get_consumer_email(),
-            'abc@abc.edu'),
+            'abc@abc.edu')
         self.assertEqual(
             self.parser.get_user_name(),
             'David Knecht1')

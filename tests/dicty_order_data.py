@@ -1,4 +1,4 @@
-"""Dictionary order data"""
+"""Dictionary order data."""
 from config import key
 
 

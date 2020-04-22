@@ -25,7 +25,7 @@ def main():
     parser.feed(html)
     order = dict_order_info(parser.get_order_id(), parser.get_user_name(),
                             parser.get_shipping_email(), args.label,
-                            args.key, args.domain)
+                            args.apikey, args.domain)
     email_msg = send_email(order['id'], order['user_name'],
                            order['shipping_email'],
                            order['trigger_label'],
