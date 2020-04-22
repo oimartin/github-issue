@@ -1,3 +1,4 @@
+"""Teset sendemail() module, mailgun API"""
 import unittest
 from dsc.email import send_email
 from tests.dicty_order_data import info
