@@ -1,25 +1,25 @@
 """Teset sendemail() module, mailgun API"""
 import unittest
 from dsc.email import send_email
-from tests.dicty_order_data import info
+from dicty_order_data import info
 import requests
 
 
 class MailgunTestBase(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.order_id = info.order['id']
-        self.user_name = info.order['user_name']
-        self.shipping_email = info.order['shipping_email']
-        self.label = info.order['trigger_label']
-        self.key = info.order['mailgun_key']
-        self.domain = info.order['mailgun_domain']
+        self.order_id = info()['id']
+        self.user_name = info()['user_name']
+        self.shipping_email = info()['shipping_email']
+        self.label = info()['trigger_label']
+        self.key = info()['mailgun_key']
+        self.domain = info()['mailgun_domain']
 
     def setUp(self):
         self.email = {}
         self.connect = requests.post(
             "https://api.mailgun.net/v3/" + self.domain + "/messages",
-            auth=self.api_call, data=self.email)
+            auth=("api", self.key), data=self.email)
 
     def test_connect(self):
         self.assertEqual(
