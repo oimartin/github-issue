@@ -25,7 +25,7 @@ def parse_cmdline():
         '--domain', required=True,
         help='connected to webiste for mailgun API')
     parser.add_argument(
-        '--api-key', required=False,
+        '--apikey', required=False,
         help='mailgun API key')
     parser.add_argument(
         '--token', required=True, help='github personal token')
