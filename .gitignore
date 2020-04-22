@@ -214,3 +214,5 @@ config.py
 .mypy_cache/3.7/urllib/request.meta.json
 .mypy_cache/3.7/urllib/response.data.json
 .mypy_cache/3.7/urllib/response.meta.json
+.mypy_cache/3.7/tests/config.data.json
+.mypy_cache/3.7/tests/config.meta.json
