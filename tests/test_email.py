@@ -1,19 +1,19 @@
-"""Teset sendemail() module, mailgun API"""
+"""Teset sendemail() module, mailgun API."""
 import unittest
 from dsc.email import send_email
-from dicty_order_data import info
+from orderdata import info
 import requests
 
 
 class MailgunTestBase(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.order_id = info()['id']
-        self.user_name = info()['user_name']
-        self.shipping_email = info()['shipping_email']
-        self.label = info()['trigger_label']
-        self.key = info()['mailgun_key']
-        self.domain = info()['mailgun_domain']
+    def setUpClass(cls):
+        cls.order_id = info()['id']
+        cls.user_name = info()['user_name']
+        cls.shipping_email = info()['shipping_email']
+        cls.label = info()['trigger_label']
+        cls.key = info()['mailgun_key']
+        cls.domain = info()['mailgun_domain']
 
     def setUp(self):
         self.email = {}
