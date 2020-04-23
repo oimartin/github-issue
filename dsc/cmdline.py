@@ -1,5 +1,6 @@
 """Handle commandline arguements."""
 import argparse
+from collections import namedtuple
 
 
 def parse_cmdline():
@@ -18,15 +19,33 @@ def parse_cmdline():
         '--repository', default='Stock-Center-Orders',
         help='github repository name')
     parser.add_argument(
-        '--issue-id', type=int, required=True)
+        '--issueid', type=int, required=True)
     parser.add_argument(
         '--label', required=False)
     parser.add_argument(
-        '--domain', required=True,
+        '--apicall', required=True,
         help='connected to webiste for mailgun API')
     parser.add_argument(
         '--apikey', required=False,
         help='mailgun API key')
     parser.add_argument(
         '--token', required=True, help='github personal token')
-    return parser.parse_args()
+    parser.add_argument(
+        '--domain', help='domain associated with from email')
+    args = parser.parse_args()
+    return args
+
+
+def cmdline_tuple(args):
+    params = namedtuple('params',
+                        ['organization', 'repository', 'issueid',
+                         'label', 'apicall', 'apikey', 'token', 'domain'])
+    issue_order = params(organization=args.organization,
+                         repository=args.repository,
+                         issueid=args.issueid,
+                         label=args.label,
+                         apicall=args.apicall,
+                         apikey=args.apikey,
+                         token=args.token,
+                         domain=args.domain)
+    return issue_order
