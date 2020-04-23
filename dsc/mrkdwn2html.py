@@ -13,7 +13,7 @@ def issue_body(repo, id):
         issue -- markdown content of issue body
 
     """
-    return repo.get_issue(number=id).body
+    return repo.get_issue(number=id[2]).body
 
 
 def mrkdwn_html(body):
