@@ -1,8 +1,10 @@
 """Parse html to get emails and order id data."""
 from html.parser import HTMLParser
+from collections import namedtuple
 
 
 class InvoiceHTMLParser(HTMLParser):
+    
     def __init__(self):
 
         self._nth_td_tag = 0
@@ -60,3 +62,16 @@ class InvoiceHTMLParser(HTMLParser):
     def get_consumer_email(self):
         """Retrieve consumer email."""
         return self._consumer_email.strip()
+    
+    def get_all_order_info(self):
+        """Retrieve all info for order"""
+        
+        OrderParams = namedtuple('OrderParams',
+                                ['order_id', 'user_name',
+                                'shipping_email', 'consumer_email'])
+        
+        order = OrderParams(order_id=self.order_id.strip(),
+                            user_name=self._user_name.strip(),
+                            shipping_email=self._shipto_email.strip(),
+                            consumer_email=self._consumer_email.strip())
+        return order
