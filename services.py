@@ -6,8 +6,9 @@ except ImportError:
 import requests
 from constants import BASE_URL
 
-MAILGUN_URL = urljoin(BASE_URL,
-                      'sandboxe866881ecbfb41dfb4edf4dc44fbc482.mailgun.org/messages')
+MAILGUN_URL = urljoin(
+                BASE_URL,
+                'sandboxe866881ecbfb41dfb4edf4dc44fbc482.mailgun.org/messages')
 
 
 def get_mailgun():
@@ -19,11 +20,24 @@ def get_mailgun():
 
 
 def info():
-    order = {'id': '4628',
-             'user_name': 'David Knecht1',
-             'shipping_email': 'oimartin1015@gmail.com',
-             'trigger_label': 'Growing/InPreparation',
-             'mailgun_key': 'dsdlsjflsjstandinkey13233',
-             'mailgun_domain':
-             'sandboxe866881ecbfb41dfb4edf4dc44fbc482.mailgun.org'}
-    return order
+    email = {"from": "Excited User <postmaster@,sandboxe866881ecbfb41dfb4edf4dc44fbc482.mailgun.org",
+             "to": 'david.knecht@uconn.edu',
+             "subject": 'DSC Order 890348 - Growing/InPreparation',
+             "text": f"""Dear David Knecht1,
+             Your order status: Growing/InPreparation
+             Please let us know if you have any questions.
+             Best regards,
+             The DSC Team
+             dictystocks@northwestern.edu"""}
+    return email
+
+
+def get_update_email(email):
+    response = requests.post(MAILGUN_URL,
+                             auth=("api", 'dsdlsjflsjstandinkey13233'),
+                             data=email)
+
+    if response.ok:
+        return response
+    else:
+        return None
