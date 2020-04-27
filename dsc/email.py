@@ -5,7 +5,7 @@ label = 'Growing/In Preparation'
 
 
 def send_email(order):
-
+    """Create email template to update users."""
     email = {"from": "Excited User <postmaster@" + order['mailgun_domain'],
              "to": order['shipping_email'],
              "subject": f"DSC Order {order['id']} - {order['trigger_label']}",

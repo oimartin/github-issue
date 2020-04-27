@@ -1,5 +1,5 @@
 """Use PyGithub to connect to Github API v3."""
-from dsc.cmdline import parse_cmdline, cmdline_tuple
+from dsc.cmdline import parse_cmdline
 from dsc.connect import github_repo
 from dsc.mrkdwn2html import issue_body, mrkdwn_html
 from dsc.invoice import InvoiceHTMLParser
@@ -18,15 +18,13 @@ def main():
         order_info -- order id, shipping and consumer emails
     """
     args = parse_cmdline()
-    info = cmdline_tuple(args)
-    repo = github_repo(info)
-    mrkdwn = issue_body(repo, info)
+    repo = github_repo(args)
+    mrkdwn = issue_body(args, repo)
     html = mrkdwn_html(mrkdwn)
     parser = InvoiceHTMLParser()
     parser.feed(html)
-    order = dict_order_info(parser.get_all_order_info(),
-                            info)
-    email_msg = send_email(order)
+    info = dict_order_info(parser.get_all_order_info(), args)
+    email_msg = send_email(info)
     return email_msg
 
 
