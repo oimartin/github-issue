@@ -2,7 +2,7 @@
 import mistune
 
 
-def issue_body(repo, id):
+def issue_body(order, repo):
     """Get issue/order of interest.
 
     Arguments:
@@ -13,7 +13,7 @@ def issue_body(repo, id):
         issue -- markdown content of issue body
 
     """
-    return repo.get_issue(number=id[2]).body
+    return repo.get_issue(number=order.issueid).body
 
 
 def mrkdwn_html(body):

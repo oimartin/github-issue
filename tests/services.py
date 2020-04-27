@@ -1,14 +1,10 @@
-try:
-    from urllib.parse import urljoin
-except ImportError:
-    from urlparse import urljoin
-
+from urllib.parse import urljoin
 import requests
-from constants import BASE_URL
 
-MAILGUN_URL = urljoin(
-                BASE_URL,
-                'sandboxe866881ecbfb41dfb4edf4dc44fbc482.mailgun.org/messages')
+BASE_URL = 'https://api.mailgun.net/v3/'
+
+MAILGUN_URL = urljoin(BASE_URL,
+    'sandboxe866881ecbfb41dfb4edf4dc44fbc482.mailgun.org/messages')
 
 
 def get_mailgun():

@@ -9,5 +9,5 @@ def github_repo(issue):
         --org/repo -- info for API connect
 
     """
-    connect = Github(issue[6])
-    return connect.get_repo(f'{issue[0]}/{issue[1]}')
+    connect = Github(issue.token)
+    return connect.get_repo(f'{issue.organization}/{issue.repository}')
