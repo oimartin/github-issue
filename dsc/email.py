@@ -1,7 +1,6 @@
 
 """Send user update email."""
 import requests
-label = 'Growing/In Preparation'
 
 
 def send_email(order):
