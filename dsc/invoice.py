@@ -1,12 +1,16 @@
-"""Parse html to get emails and order id data."""
 from html.parser import HTMLParser
 from collections import namedtuple
 
 
 class InvoiceHTMLParser(HTMLParser):
-    
-    def __init__(self):
+    """Grab info from html version of issue body.
 
+    Arguments:
+        HTMLParser {class}
+    """
+
+    def __init__(self):
+        """Initialize attributs."""
         self._nth_td_tag = 0
         self._nth_br_tag = 0
         self.nth_strong_tag = 0
@@ -62,14 +66,13 @@ class InvoiceHTMLParser(HTMLParser):
     def get_consumer_email(self):
         """Retrieve consumer email."""
         return self._consumer_email.strip()
-    
+
     def get_all_order_info(self):
-        """Retrieve all info for order"""
-        
+        """Retrieve all info for order."""
         OrderParams = namedtuple('OrderParams',
-                                ['order_id', 'user_name',
-                                'shipping_email', 'consumer_email'])
-        
+                                 ['order_id', 'user_name',
+                                  'shipping_email', 'consumer_email'])
+
         order = OrderParams(order_id=self.order_id.strip(),
                             user_name=self._user_name.strip(),
                             shipping_email=self._shipto_email.strip(),
