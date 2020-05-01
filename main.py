@@ -22,7 +22,9 @@ def main():
     parser = InvoiceHTMLParser()
     parser.feed(html)
     info = dict_order_info(parser.get_all_order_info(), args)
-    return EmailUser(info)
+    details = EmailUser(info)
+    details.create_email()
+    return details.send_email()
 
 
 if __name__ == "__main__":
