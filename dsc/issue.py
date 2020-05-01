@@ -2,26 +2,22 @@ from github import Github
 import mistune
 
 
-class GithubIssue(Github):
+class GithubIssue():
     """Connect to GitHub repo and return html of issue body.
 
     Arguments:
         Github {class} -- Bridge to GitHub API
     """
 
-    def __init__(self, cmdline):
+    def __init__(self, info):
         """Initialize commandline attributes."""
-        self.token = cmdline.token
-        self.organization = cmdline.organization
-        self.repository = cmdline.repository
-        self.issueid = cmdline.issueid
-        self.connect = ''
         self.body = ''
+        self.connect = Github(info.token).get_repo(
+            f'{info.organization}/{info.repository}')
 
-    def github_repo(self):
-        """Prepare connection to repository."""
-        self.connect = Github(self.token).get_repo(f'{self.organization}/{self.repository}')
-        self.body = self.connect.get_issue(number=self.issueid).body
+    def get_body(self, issueid):
+        """Generate html versision of issue body."""
+        self.body = self.connect.get_issue(number=issueid).body
         return self.body
 
     def mrkdwn_html(self):
