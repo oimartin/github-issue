@@ -12,18 +12,15 @@ class GithubIssue(Github):
     def __init__(self, cmdline):
         """Initialize commandline attributes."""
         self.token = cmdline.token
-        self.org = cmdline.organization
-        self.repo = cmdline.repository
+        self.organization = cmdline.organization
+        self.repository = cmdline.repository
         self.issueid = cmdline.issueid
-        Github.__init__(self)
+        self.connect = ''
+        self.body = ''
 
     def github_repo(self):
         """Prepare connection to repository."""
-        self.connect = Github(self.token).get_repo(f'{self.org}/{self.repo}')
-        return self.connect
-
-    def issue_body(self):
-        """Grab issue body."""
+        self.connect = Github(self.token).get_repo(f'{self.organization}/{self.repository}')
         self.body = self.connect.get_issue(number=self.issueid).body
         return self.body
 
