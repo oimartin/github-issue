@@ -18,4 +18,9 @@ MailgunEmailParams = namedtuple('MailgunEmailParams',
                                  'api_key'
                                  ])
 
-SendEmailParams = namedtuple('SendEmailParams', ['from', 'to', 'content'])
+SendEmailParams = namedtuple('SendEmailParams',
+                             ['from',
+                              'to',
+                              'content',
+                              'subject'
+                              ])
