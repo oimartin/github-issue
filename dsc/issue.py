@@ -1,37 +1,23 @@
-from github import Github
-from collections import namedtuple
+from github import Github, Issue
+from dsc.params import GithubParams
 import mistune
-
-GithubParams = namedtuple('GithubParams',
-                          ['token',
-                           'repository',
-                           'organization'
-                           ])
 
 
 class GithubIssue():
-    """Connect to GitHub repo and return html of issue body.
-
-    Arguments:
-        Github {class} -- Bridge to GitHub API
-    """
-
-    def __init__(self, params):
-        """Initialize commandline attributes."""
-        self.token = params.token
-        self.repository = params.repository
-        self.organization = params.organization
+    def __init__(self, params: GithubParams) -> None:
         self.connect = Github(params.token)
+        self.repo_obj = self.connect.get_repo(
+            f'{params.organization}/{params.repository}'
+        )
+        self.token = params.token
+        self.repo = params.repository
+        self.organization = params.organization
 
-    def repo(self):
-        """Returns a repository object
-        """
-        return self.connect.get_repo(f'{self.organization}/{self.repository}')
+    def issue(self, issueid: int) -> Issue.Issue:
+        return self.repo_obj.get_issue(number=issueid)
 
-    def body(self, issueid):
-        """Gets raw markdown content of issue body."""
-        return self.repo().get_issue(number=issueid).body
+    def body(self, issueid: int) -> str:
+        return self.issue(issueid).body
 
-    def html(self, issueid):
-        """Generate html versision of issue body."""
+    def html(self, issueid: int) -> str:
         return mistune.html(self.body(issueid))
