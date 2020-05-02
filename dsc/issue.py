@@ -1,5 +1,12 @@
 from github import Github
+from collections import namedtuple
 import mistune
+
+GithubParams = namedtuple('GithubParams',
+                          ['token',
+                           'repository',
+                           'organization'
+                           ])
 
 
 class GithubIssue():
