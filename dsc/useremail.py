@@ -1,13 +1,14 @@
 import requests
+from dsc.params import MailgunEmailParams
 
 
 class EmailUser:
     """Use Mailgun API to send user order update email."""
 
-    def __init__(self, order):
+    def __init__(self, params: MailgunEmailParams) -> None:
         """Initilize order information attributes."""
-        self.mailgun_apicall = order.mailgun_apicall
-        self.mailgun_key = order.mailgun_key
+        self.endpoint = params.endpoint
+        self.api_key = params.api_key
 
     def send_email(self, order):
         """Initialize email with mailgun API."""
