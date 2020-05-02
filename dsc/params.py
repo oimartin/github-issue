@@ -7,10 +7,15 @@ GithubParams = namedtuple('GithubParams',
                            ])
 
 OrderParams = namedtuple('OrderParams',
-                         ['order_id', 'user_name',
-                          'shipping_email', 'consumer_email'
+                         ['order_id',
+                          'user_name',
+                          'shipping_email',
+                          'consumer_email'
                           ])
 
 MailgunEmailParams = namedtuple('MailgunEmailParams',
-                                ['endpoint', 'api_key']
-                                )
+                                ['endpoint',
+                                 'api_key'
+                                 ])
+
+SendEmailParams = namedtuple('SendEmailParams', ['from', 'to', 'content'])
