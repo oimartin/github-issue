@@ -16,17 +16,22 @@ class GithubIssue():
         Github {class} -- Bridge to GitHub API
     """
 
-    def __init__(self, info):
+    def __init__(self, params):
         """Initialize commandline attributes."""
-        self.body = ''
-        self.connect = Github(info.token).get_repo(
-            f'{info.organization}/{info.repository}')
+        self.token = params.token
+        self.repository = params.repository
+        self.organization = params.organization
+        self.connect = Github(params.token)
 
-    def get_body(self, issueid):
-        """Generate html versision of issue body."""
-        self.body = self.connect.get_issue(number=issueid).body
-        return self.body
+    def repo(self):
+        """Returns a repository object
+        """
+        return self.connect.get_repo(f'{self.organization}/{self.repository}')
 
-    def mrkdwn_html(self):
+    def body(self, issueid):
+        """Gets raw markdown content of issue body."""
+        return self.repo().get_issue(number=issueid).body
+
+    def html(self, issueid):
         """Generate html versision of issue body."""
-        return mistune.html(self.body)
+        return mistune.html(self.body(issueid))
