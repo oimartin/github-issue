@@ -1,26 +1,24 @@
-from collections import namedtuple
+from dataclasses import dataclass
 
-GithubParams = namedtuple('GithubParams',
-                          ['token',
-                           'repository',
-                           'organization'
-                           ])
 
-OrderParams = namedtuple('OrderParams',
-                         ['order_id',
-                          'user_name',
-                          'shipping_email',
-                          'consumer_email'
-                          ])
+@dataclass
+class GithubParams:
+    token: str
+    repository: str
+    organization: str
 
-MailgunEmailParams = namedtuple('MailgunEmailParams',
-                                ['endpoint',
-                                 'api_key'
-                                 ])
 
-SendEmailParams = namedtuple('SendEmailParams',
-                             ['from',
-                              'to',
-                              'content',
-                              'subject'
-                              ])
+@dataclass
+class OrderParams:
+    order_id: int
+    user_name: str
+    shippint_email: str
+    consumer_email: str
+
+
+@dataclass
+class SendEmailParams:
+    to: str
+    sender: str
+    content: str
+    subject: str
