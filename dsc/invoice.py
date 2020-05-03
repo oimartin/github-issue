@@ -67,9 +67,9 @@ class InvoiceHTMLParser(HTMLParser):
         """Retrieve consumer email."""
         return self._consumer_email.strip()
 
-    def get_all_order_info(self) -> OrderParams:
+    def get_all_order_info(self) -> OrderInfo:
         """Retrieve all info for order."""
         return OrderInfo(order_id=self.order_id.strip(),
-                           user_name=self._user_name.strip(),
-                           shipping_email=self._shipto_email.strip(),
-                           consumer_email=self._consumer_email.strip())
+                         user_name=self._user_name.strip(),
+                         shipping_email=self._shipto_email.strip(),
+                         consumer_email=self._consumer_email.strip())

@@ -6,7 +6,7 @@ from string import Template
 
 @dataclass
 class EmailTemplate:
-    subject_template: Template = Template('DSC Order $issue_id - $label')
+    subject_template: Template = Template('DSC Order $order_id - $label')
     content_template: Template = Template(
                                 """Dear $user,
                                 Your order status: $label
@@ -15,9 +15,9 @@ class EmailTemplate:
                                 The DSC Team
                                 dictystocks@northwestern.edu""")
 
-    def generate_subject(self, issue_id: int, label: str) -> str:
+    def generate_subject(self, order_id: int, label: str) -> str:
         return self.subject_template.substitute(
-            issue_id=issue_id,
+            issue_id=order_id,
             label=label
         )
 
