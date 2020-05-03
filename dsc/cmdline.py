@@ -30,5 +30,7 @@ def parse_cmdline():
     parser.add_argument(
         '--token', required=True, help='github personal token')
     parser.add_argument(
-        '--domain', help='domain associated with from email')
+        '--sender',
+        default='Stock center robot<stockbot@mail.dictycr.org>',
+        help='email address of the sender')
     return parser.parse_args()
