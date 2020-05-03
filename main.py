@@ -1,6 +1,6 @@
 from dsc.cmdline import parse_cmdline
 from dsc.issue import GithubIssue
-from dsc.params import GithubParams, SendEmailParams
+from dsc.params import SendEmailParams
 from dsc.invoice import InvoiceHTMLParser
 from dsc.email import Email, EmailTemplate
 
@@ -13,11 +13,11 @@ def main():
     """
     parser = InvoiceHTMLParser()
     args = parse_cmdline()
-    issue = GithubIssue(GithubParams(
+    issue = GithubIssue(
         token=args.token,
         repository=args.repository,
         organiation=args.organization
-    ))
+    )
     parser.feed(issue.html(args.issueid))
     template = EmailTemplate()
     email = Email(endpoint=args.endpoint, api_key=args.apikey)

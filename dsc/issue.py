@@ -1,17 +1,21 @@
-from github import Github, Issue
-from dsc.params import GithubParams
+from github import Github, Issue, Repository
+from dataclasses import dataclass
 import mistune
 
 
+@dataclass
 class GithubIssue():
-    def __init__(self, params: GithubParams) -> None:
-        self.connect = Github(params.token)
+    token: str
+    repository: str
+    organization: str
+    connect: Github(init=False)
+    repo_obj: Repository(init=False)
+
+    def __post_init__(self) -> None:
+        self.connect = Github(self.token)
         self.repo_obj = self.connect.get_repo(
-            f'{params.organization}/{params.repository}'
+            f'{self.organization}/{self.repository}'
         )
-        self.token = params.token
-        self.repo = params.repository
-        self.organization = params.organization
 
     def issue(self, issueid: int) -> Issue.Issue:
         return self.repo_obj.get_issue(number=issueid)

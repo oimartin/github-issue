@@ -2,13 +2,6 @@ from dataclasses import dataclass
 
 
 @dataclass
-class GithubParams:
-    token: str
-    organization: str
-    repository: str
-
-
-@dataclass
 class OrderInfo:
     order_id: int
     user_name: str
