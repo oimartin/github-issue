@@ -1,5 +1,5 @@
 from html.parser import HTMLParser
-from dsc.params import OrderParams
+from dsc.params import OrderInfo
 
 
 class InvoiceHTMLParser(HTMLParser):
@@ -69,7 +69,7 @@ class InvoiceHTMLParser(HTMLParser):
 
     def get_all_order_info(self) -> OrderParams:
         """Retrieve all info for order."""
-        return OrderParams(order_id=self.order_id.strip(),
+        return OrderInfo(order_id=self.order_id.strip(),
                            user_name=self._user_name.strip(),
                            shipping_email=self._shipto_email.strip(),
                            consumer_email=self._consumer_email.strip())
