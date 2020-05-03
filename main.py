@@ -1,9 +1,8 @@
 from dsc.cmdline import parse_cmdline
-from dsc.githubrepo import github
 from dsc.issue import GithubIssue
+from dsc.params import GithubParams, SendEmailParams
 from dsc.invoice import InvoiceHTMLParser
-from dsc.orderinfo import order_info
-from dsc.useremail import EmailUser
+from dsc.email import Email, EmailTemplate
 
 
 def main():
@@ -11,21 +10,29 @@ def main():
 
     Executes:
         parse_cmdline() -- command-line interface
-        github_repo -- connect to org/repo
-        issue_comments -- output issue content
-    Returns:
-        order_info -- order id, shipping and consumer emails
     """
-    args = parse_cmdline()
-    connected = github(args)
-    issue = GithubIssue(connected)
-    issue.get_body(args.issueid)
-    html = issue.mrkdwn_html()
     parser = InvoiceHTMLParser()
-    parser.feed(html)
-    info = order_info(parser.get_all_order_info(), args)
-    details = EmailUser(info)
-    return details.send_email(info)
+    args = parse_cmdline()
+    issue = GithubIssue(GithubParams(
+        token=args.token,
+        repository=args.repository,
+        organiation=args.organization
+    ))
+    parser.feed(issue.html(args.issueid))
+    template = EmailTemplate()
+    email = Email(endpoint=args.endpoint, api_key=args.apikey)
+    email.send(SendEmailParams(
+        sender=args.sender,
+        to=parser.get_shipping_email(),
+        subject=template.generate_subject(
+            issue_id=parser.get_order_id(),
+            label=args.label
+        ),
+        content=template.generate_content(
+            user=parser.get_user_name(),
+            label=args.label
+        )
+    ))
 
 
 if __name__ == "__main__":
