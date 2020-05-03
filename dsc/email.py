@@ -39,7 +39,7 @@ class Email:
         return requests.post(
             self.endpoint,
             auth=('api', self.api_key),
-            data={'from': params.send,
+            data={'from': params.sender,
                   'to': params.to,
                   'subject': params.subject,
                   'text': params.content

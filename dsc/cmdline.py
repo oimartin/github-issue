@@ -22,10 +22,10 @@ def parse_cmdline():
     parser.add_argument(
         '--label', required=False)
     parser.add_argument(
-        '--apicall', required=True,
-        help='connected to webiste for mailgun API')
+        '--endpoint', required=True,
+        help='mailgun API endpoint')
     parser.add_argument(
-        '--apikey', required=False,
+        '--apikey', required=True,
         help='mailgun API key')
     parser.add_argument(
         '--token', required=True, help='github personal token')

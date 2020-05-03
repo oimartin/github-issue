@@ -4,15 +4,15 @@ from dataclasses import dataclass
 @dataclass
 class GithubParams:
     token: str
-    repository: str
     organization: str
+    repository: str
 
 
 @dataclass
 class OrderParams:
     order_id: int
     user_name: str
-    shippint_email: str
+    shipping_email: str
     consumer_email: str
 
 
