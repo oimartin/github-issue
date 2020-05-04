@@ -2,11 +2,11 @@ name: Python workflow
 
 on:
   issues:
-    types: [labeled, unlabeled]
+    types: [labeled]
 
 jobs:
   build:
-    if: github.event.label.name == 'invalid' || github.event.label.name == 'bug'
+    if: ${{ github.event.label.name == 'Growing / in Preparation' || github.event.label.name == 'Shipped' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -14,15 +14,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Get details
-        run: |
-          echo ${{ github.event.issue.number }}
-          echo ${{ github.event.issue.labels }}
-          echo ${{ github.event_name }}
-          echo ${{ github.event.issue[1].name }}
-          echo ${{ github.event.issue.labels.name }}
-          echo ${{ github.event.issue.labels[0] }}
-          echo ${{ github.event.issue.labels[1] }}
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
@@ -31,6 +22,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run python script
+      - name: Run main
         run: |
-          python print(f"hello world")
+          ISSUELABELS=${{ github.event.issue.labels }}    
+          for issue in ${ISSUELABELS}:
+            if issue == ${{github.event.label.name}}:
+              label = issue
+          ISSUEID=${{ github.event.issue.number }}
+          TOKEN=${{ github.token }}
+          APIKEY=${{secrets.MAILGUN}}
+
+          python main.py --organization --repository  --issueid {ISSUEID} --label {issue} --endpoint https://api.mailgun.net/v3/mail.dictycr.org/messages --apikey {APIKEY} --token TOKEN --sender
+
