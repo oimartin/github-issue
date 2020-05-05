@@ -2,27 +2,19 @@ name: Python workflow
 
 on:
   issues:
-    types: [labeled, unlabeled]
+    types: [labeled]
 
 jobs:
   build:
-    if: github.event.label.name == 'invalid' || github.event.label.name == 'bug'
+    if: ${{ github.event.label.name == 'Growing / in Preparation' || github.event.label.name == 'Shipped' || github.event.label.name == 'invalid' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Get details
-        run: |
-          echo ${{ github.event.issue.number }}
-          echo ${{ github.event.issue.labels }}
-          echo ${{ github.event_name }}
-          echo ${{ github.event.issue[1].name }}
-          echo ${{ github.event.issue.labels.name }}
-          echo ${{ github.event.issue.labels[0] }}
-          echo ${{ github.event.issue.labels[1] }}
+      - name: Check out repo
+        uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
@@ -31,6 +23,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run python script
+      - name: Send update email to user
+        env:
+          APIKEY: ${{secrets.MAILGUN}}
+          ISSUELABELS: ${{ github.event.issue.labels }}
+          ISSUEID: ${{ github.event.issue.number }}
+          TOKEN: ${{ seecrets.GITHUB_TOKEN }}
+          TRIGGER: ${{github.event.label.name}}
         run: |
-          python print(f"hello world")
+          for issue in "$ISSUELABELS":
+            if issue == "$TRIGGER":
+              label = issue
+
+          python main.py --organization --repository  --issueid "$ISSUEID" --label label \
+          --endpoint https://api.mailgun.net/v3/mail.dictycr.org/messages \
+          --apikey "$APIKEY" --token "$TOKEN" --sender
