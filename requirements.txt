@@ -1,0 +1,11 @@
+-i https://pypi.org/simple
+certifi==2020.4.5.1
+chardet==3.0.4
+deprecated==1.2.9
+idna==2.9
+mistune==0.8.4
+pygithub==1.51
+pyjwt==1.7.1
+requests==2.23.0
+urllib3==1.25.9
+wrapt==1.12.1
