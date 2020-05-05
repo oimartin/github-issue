@@ -13,6 +13,7 @@ jobs:
         python-version: [3.6, 3.7, 3.8]
 
     steps:
+      - name: Check out repo
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
@@ -22,14 +23,19 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run main
+        continue-on-error: true
+      - name: Send update email to user
+        env:
+          APIKEY: ${{secrets.MAILGUN}}
+          ISSUELABELS: ${{ github.event.issue.labels }}
+          ISSUEID: ${{ github.event.issue.number }}
+          TOKEN: ${{ seecrets.GITHUB_TOKEN }}
+          TRIGGER: ${{github.event.label.name}}
         run: |
-          ISSUELABELS=${{ github.event.issue.labels }}    
-          for issue in ${ISSUELABELS}:
-            if issue == ${{github.event.label.name}}:
+          for issue in "$ISSUELABELS":
+            if issue == TRIGGER:
               label = issue
-          ISSUEID=${{ github.event.issue.number }}
-          TOKEN=${{ github.token }}
-          APIKEY=${{secrets.MAILGUN}}
 
-          python main.py --organization --repository  --issueid {ISSUEID} --label {issue} --endpoint https://api.mailgun.net/v3/mail.dictycr.org/messages --apikey {APIKEY} --token TOKEN --sender
+          python main.py --organization --repository  --issueid "$ISSUEID" --label issue \
+          --endpoint https://api.mailgun.net/v3/mail.dictycr.org/messages \
+          --apikey "$APIKEY" --token "$TOKEN" --sender
