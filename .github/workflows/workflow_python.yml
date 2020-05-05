@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.label.name == 'Growing / in Preparation' || github.event.label.name == 'Shipped' }}
+    if: ${{ github.event.label.name == 'Growing / in Preparation' || github.event.label.name == 'Shipped' || github.event.label.name == 'invalid' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -33,4 +33,3 @@ jobs:
           APIKEY=${{secrets.MAILGUN}}
 
           python main.py --organization --repository  --issueid {ISSUEID} --label {issue} --endpoint https://api.mailgun.net/v3/mail.dictycr.org/messages --apikey {APIKEY} --token TOKEN --sender
-
