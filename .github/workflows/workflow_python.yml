@@ -24,17 +24,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Send update email to user
-        env:
-          APIKEY: ${{secrets.MAILGUN}}
-          ISSUELABELS: ${{ github.event.issue.labels }}
-          ISSUEID: ${{ github.event.issue.number }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TRIGGER: ${{ github.event.label.name }}
         run: |
-          for issue in "$ISSUELABELS":
-            if issue == "$TRIGGER":
+          for issue in ${{ github.event.issue.labels }}:
+            if issue == ${{ github.event.label.name }}:
               label = issue
 
-          python main.py --organization --repository  --issueid "$ISSUEID" --label label \
+          python main.py --organization dictybase-playground --repository learn-github-action \
+          --issueid ${{ github.event.issue.number }} --label label \
           --endpoint https://api.mailgun.net/v3/mail.dictycr.org/messages \
-          --apikey "$APIKEY" --token "$TOKEN" --sender
+          --apikey ${{ secrets.MAILGUN }} --token ${{ secrets.GITHUB_TOKEN }} --sender
