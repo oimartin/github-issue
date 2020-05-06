@@ -32,16 +32,6 @@ class TestInvoiceHTMLParser(unittest.TestCase):
             self.parser.get_user_name(),
             'Ramesh Rijal')
 
-    def test_all_order_info(self):
-        OrderParams = namedtuple('OrderParams',
-                                 ['order_id', 'user_name',
-                                  'shipping_email', 'consumer_email'])
-        self.assertTupleEqual(
-            self.parser.get_all_order_info(),
-            OrderParams(order_id='9277', user_name='Ramesh Rijal',
-                        shipping_email='rrijal@bio.tamu.edu',
-                        consumer_email=''))
-
     def test_all(self):
         self.assertEqual(
             self.parser.get_order_id(),

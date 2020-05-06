@@ -59,5 +59,4 @@ class InvoiceHTMLParser(HTMLParser):
         """Retrieve all info for order."""
         return OrderInfo(order_id=self.order_id.strip(),
                          user_name=self._user_name.strip(),
-                         shipping_email=self._shipto_email.strip(),
-                         consumer_email=self._consumer_email.strip())
+                         shipping_email=self._shipto_email.strip())
