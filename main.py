@@ -16,7 +16,7 @@ def main():
     issue = GithubIssue(
         token=args.token,
         repository=args.repository,
-        organiation=args.organization
+        organization=args.organization
     )
     parser.feed(issue.html(args.issueid))
     template = EmailTemplate()
