@@ -42,7 +42,7 @@ class Email:
         """Send email with mailgun API."""
         with open("style/html_email.html", 'w') as f:
             f.write(params.content)
-        print(requests.post(
+        return requests.post(
             self.endpoint,
             auth=('api', self.api_key),
             data={'from': params.sender,
@@ -50,4 +50,4 @@ class Email:
                   'subject': params.subject,
                   'text': "Test, this is the text part.",
                   'html': params.content
-                  }).status_code)
+                  })
