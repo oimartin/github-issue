@@ -40,8 +40,6 @@ class Email:
 
     def send(self, params: SendEmailParams) -> None:
         """Send email with mailgun API."""
-        with open("style/html_email.html", 'w') as f:
-            f.write(params.content)
         return requests.post(
             self.endpoint,
             auth=('api', self.api_key),
