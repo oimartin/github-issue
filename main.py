@@ -30,7 +30,8 @@ def main():
         ),
         content=template.generate_content(
             user=parser.get_user_name(),
-            label=args.label
+            label=args.label,
+            issue_id=parser.get_order_id()
         )
     ))
 

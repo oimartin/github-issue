@@ -2,18 +2,20 @@ import requests
 from dsc.params import SendEmailParams
 from dataclasses import dataclass
 from string import Template
+from style.style import send_style
+from style.message import send_body
 
 
 @dataclass
 class EmailTemplate:
     subject_template: Template = Template('DSC Order $issue_id - $label')
     content_template: Template = Template(
-        """Dear $user,
-    Your order status: $label
-    Please let us know if you have any questions.
-    Best regards,
-    The DSC Team
-    dictystocks@northwestern.edu""")
+        f"""
+<html>
+    {send_style()}
+            {send_body()}
+</html>
+        """)
 
     def generate_subject(self, issue_id: int, label: str) -> str:
         return self.subject_template.substitute(
@@ -21,10 +23,11 @@ class EmailTemplate:
             label=label
         )
 
-    def generate_content(self, user: str, label: str) -> str:
+    def generate_content(self, user: str, label: str, issue_id: int) -> str:
         return self.content_template.substitute(
             user=user,
-            label=label
+            label=label,
+            issue_id=issue_id
         )
 
 
@@ -37,11 +40,14 @@ class Email:
 
     def send(self, params: SendEmailParams) -> None:
         """Send email with mailgun API."""
-        return requests.post(
+        with open("style/html_email.html", 'w') as f:
+            f.write(params.content)
+        print(requests.post(
             self.endpoint,
             auth=('api', self.api_key),
             data={'from': params.sender,
                   'to': params.to,
                   'subject': params.subject,
-                  'text': params.content
-                  })
+                  'text': "Test, this is the text part.",
+                  'html': params.content
+                  }).status_code)
