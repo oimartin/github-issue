@@ -19,7 +19,14 @@ def main():
         organization=args.organization
     )
     parser.feed(issue.html(args.issueid))
+
     template = EmailTemplate()
+
+    with open("template/update_template.html", 'r') as f:
+        update = f.read()
+
+    template.make_content(update)
+
     email = Email(endpoint=args.endpoint, api_key=args.apikey)
     email.send(SendEmailParams(
         sender=args.sender,

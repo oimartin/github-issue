@@ -2,20 +2,16 @@ import requests
 from dsc.params import SendEmailParams
 from dataclasses import dataclass
 from string import Template
-from style.style import send_style
-from style.message import send_body
 
 
 @dataclass
 class EmailTemplate:
+    content_template: Template = Template('')
     subject_template: Template = Template('DSC Order $issue_id - $label')
-    content_template: Template = Template(
-        f"""
-<html>
-    {send_style()}
-            {send_body()}
-</html>
-        """)
+
+    def make_content(self, email: str):
+        self.content_template = Template(email)
+        return self.content_template
 
     def generate_subject(self, issue_id: int, label: str) -> str:
         return self.subject_template.substitute(
