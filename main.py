@@ -3,6 +3,9 @@ from dsc.issue import GithubIssue
 from dsc.params import SendEmailParams
 from dsc.invoice import InvoiceHTMLParser
 from dsc.email import Email, EmailTemplate
+import os
+
+TEST_FOLDER = os.path.join(os.path.dirname(__file__))
 
 
 def main():
@@ -20,12 +23,11 @@ def main():
     )
     parser.feed(issue.html(args.issueid))
 
-    template = EmailTemplate()
+    file = os.path.join(TEST_FOLDER, 'template/update_template.html')
+    with open(file, 'r') as f:
+        content = f.read()
 
-    with open("template/update_template.html", 'r') as f:
-        update = f.read()
-
-    template.make_content(update)
+    template = EmailTemplate(message=content)
 
     email = Email(endpoint=args.endpoint, api_key=args.apikey)
     email.send(SendEmailParams(

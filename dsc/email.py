@@ -6,12 +6,11 @@ from string import Template
 
 @dataclass
 class EmailTemplate:
-    content_template: Template = Template('')
+    message: str
     subject_template: Template = Template('DSC Order $issue_id - $label')
 
-    def make_content(self, email: str):
-        self.content_template = Template(email)
-        return self.content_template
+    def __post_init__(self) -> None:
+        self.content_template = Template(self.message)
 
     def generate_subject(self, issue_id: int, label: str) -> str:
         return self.subject_template.substitute(
