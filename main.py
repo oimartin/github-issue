@@ -5,7 +5,7 @@ from dsc.invoice import InvoiceHTMLParser
 from dsc.email import Email, EmailTemplate
 import os
 
-TEST_FOLDER = os.path.join(os.path.dirname(__file__))
+TEMPLATE_FOLDER = os.path.join(os.path.dirname(__file__), 'template')
 
 
 def main():
@@ -23,9 +23,13 @@ def main():
     )
     parser.feed(issue.html(args.issueid))
 
-    file = os.path.join(TEST_FOLDER, 'template/update_template.html')
-    with open(file, 'r') as f:
-        content = f.read()
+    file = os.path.join(TEMPLATE_FOLDER, 'update_template.html')
+
+    if os.path.isfile(file) is True:
+        with open(file, 'r') as f:
+            content = f.read()
+    else:
+        print("Check file path of html")
 
     template = EmailTemplate(message=content)
 
