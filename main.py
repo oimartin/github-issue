@@ -25,11 +25,11 @@ def main():
 
     file = os.path.join(TEMPLATE_FOLDER, 'update_template.html')
 
-    if os.path.isfile(file) is True:
+    try:
         with open(file, 'r') as f:
             content = f.read()
-    else:
-        print("Check file path of html")
+    except FileNotFoundError as fnf_error:
+        print(fnf_error)
 
     template = EmailTemplate(message=content)
 
