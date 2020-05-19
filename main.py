@@ -33,7 +33,7 @@ def main():
                 content = f.read()
         except RuntimeError as error:
             print(error)
-            print("Could not read file.")
+            sys.exit("Could not read order update template file.")
 
     template = EmailTemplate(message=content)
 
