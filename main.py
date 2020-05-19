@@ -4,16 +4,13 @@ from dsc.params import SendEmailParams
 from dsc.invoice import InvoiceHTMLParser
 from dsc.email import Email, EmailTemplate
 import os
+import sys
 
 TEMPLATE_FOLDER = os.path.join(os.path.dirname(__file__), 'template')
 
 
 def main():
-    """Execute other functions in script.
-
-    Executes:
-        parse_cmdline() -- command-line interface
-    """
+    """Execute modules to send order update email to DSC users."""
     parser = InvoiceHTMLParser()
     args = parse_cmdline()
     issue = GithubIssue(
@@ -26,10 +23,17 @@ def main():
     file = os.path.join(TEMPLATE_FOLDER, 'update_template.html')
 
     try:
-        with open(file, 'r') as f:
-            content = f.read()
+        os.path.exists(file)
     except FileNotFoundError as fnf_error:
         print(fnf_error)
+        sys.exit("Email update template was not found.")
+    else:
+        try:
+            with open(file, 'r') as f:
+                content = f.read()
+        except RuntimeError as error:
+            print(error)
+            print("Could not read file.")
 
     template = EmailTemplate(message=content)
 
