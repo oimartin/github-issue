@@ -14,11 +14,8 @@ class GithubIssue():
 
         try:
             self.connect = github.Github(self.token)
-        except github.BadCredentialsException as badcred:
-            print(
-                f"""GitHub error status: {badcred.status}
-                GitHub error data: {badcred.data}""")
-            sys.exit("Check token used to connect to GitHub.")
+        except github.BadCredentialsException:
+            sys.exit()
         else:
             try:
                 self.repo_obj = self.connect.get_repo(
@@ -26,21 +23,20 @@ class GithubIssue():
                 )
             except github.BadAttributeException as badattr:
                 print(
-                    f"""GitHub error value: {badattr.actual_value}
-                    PyGithub expected type: {badattr.expected_type}
-                    PyGithb exception: {badattr.transformation_exception}""")
-                sys.exit(
-                    "Check the organization and repository used to connect to GitHub.")
+                    f"""GitHub error value: {badattr.actual_value}.
+                    Pyithub expected type: {badattr.expected_type}.
+                    PyGithb exception: {badattr.transformation_exception}.""")
+                sys.exit()
 
     def issue(self, issueid: int) -> github.Issue.Issue:
         try:
             return self.repo_obj.get_issue(number=issueid)
         except github.BadAttributeException as badattr:
             print(
-                f"""GitHub error value: {badattr.actual_value}
-                  PyGithub expected type: {badattr.expected_type}
-                  PyGithb exception: {badattr.transformation_exception}""")
-            sys.exit("Could not connect to specific GitHub issue.")
+                f"""GitHub error value: {badattr.actual_value}.
+                  PyGithub expected type: {badattr.expected_type}.
+                  PyGithb exception: {badattr.transformation_exception}.""")
+            sys.exit()
 
     def body(self, issueid: int) -> str:
         try:
@@ -49,22 +45,22 @@ class GithubIssue():
             print(
                 f"""GitHub error status: {gitexcept.status}
                 GitHub error data: {gitexcept.data}""")
-            sys.exit("Check how connecting to issue body.")
+            sys.exit()
 
     def html(self, issueid: int) -> str:
         try:
             self.body(issueid) == str
         except AttributeError as error:
             print(error)
-            sys.exit("Issue body sent to html() function is not a string.")
+            sys.exit()
         else:
             try:
                 mistune.html(self.body(issueid))[:5] == '<html>'
             except MistuneError as error:
                 print(error)
-                sys.exit(
-                    """Mistune is not creating an
-                    html version of Github issue body.""")
+                with open("mistune_output_error.txt", 'w') as f:
+                    f.write(mistune.html(self.body(issueid)))
+                sys.exit()
             else:
                 return mistune.html(self.body(issueid))
 
