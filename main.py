@@ -23,7 +23,7 @@ def main():
     file = os.path.join(TEMPLATE_FOLDER, 'update_template.html')
 
     try:
-        os.path.exists(file)
+        os.path.exists(file) is True
     except FileNotFoundError as fnf_error:
         print(fnf_error)
         sys.exit("Email update template was not found.")
