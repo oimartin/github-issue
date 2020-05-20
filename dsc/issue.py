@@ -35,8 +35,11 @@ class GithubIssue():
     def issue(self, issueid: int) -> github.Issue.Issue:
         try:
             return self.repo_obj.get_issue(number=issueid)
-        except IssueIdError as error:
-            print(error)
+        except github.BadAttributeException as badattr:
+            print(
+                f"""GitHub error value: {badattr.actual_value}
+                  PyGithub expected type: {badattr.expected_type}
+                  PyGithb exception: {badattr.transformation_exception}""")
             sys.exit("Could not connect to specific GitHub issue.")
 
     def body(self, issueid: int) -> str:
@@ -44,11 +47,3 @@ class GithubIssue():
 
     def html(self, issueid: int) -> str:
         return mistune.html(self.body(issueid))
-
-
-class IssueIdError(Exception):
-    def __init__(self, issueid, msg=None):
-        if msg is None:
-            msg = "An error occured with the issue id."
-        super().__init__(msg)
-        self.issueid = issueid
