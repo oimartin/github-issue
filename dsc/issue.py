@@ -43,7 +43,35 @@ class GithubIssue():
             sys.exit("Could not connect to specific GitHub issue.")
 
     def body(self, issueid: int) -> str:
-        return self.issue(issueid).body
+        try:
+            return self.issue(issueid).body
+        except github.GithubExceptions as gitexcept:
+            print(
+                f"""GitHub error status: {gitexcept.status}
+                GitHub error data: {gitexcept.data}""")
+            sys.exit("Check how connecting to issue body.")
 
     def html(self, issueid: int) -> str:
-        return mistune.html(self.body(issueid))
+        try:
+            self.body(issueid) == str
+        except AttributeError as error:
+            print(error)
+            sys.exit("Issue body sent to html() function is not a string.")
+        else:
+            try:
+                mistune.html(self.body(issueid))[:5] == '<html>'
+            except MistuneError as error:
+                print(error)
+                sys.exit(
+                    """Mistune is not creating an
+                    html version of Github issue body.""")
+            else:
+                return mistune.html(self.body(issueid))
+
+
+class MistuneError(Exception):
+    def __init__(self, issueid, msg=None):
+        if msg is None:
+            msg = "An error ocurred with mistune."
+        super().__init__(msg)
+        self.issueid = issueid
