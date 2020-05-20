@@ -2,6 +2,7 @@ import requests
 from dsc.params import SendEmailParams
 from dataclasses import dataclass
 from string import Template
+import sys
 
 
 @dataclass
@@ -35,7 +36,7 @@ class Email:
 
     def send(self, params: SendEmailParams) -> None:
         """Send email with mailgun API."""
-        return requests.post(
+        full_email = requests.post(
             self.endpoint,
             auth=('api', self.api_key),
             data={'from': params.sender,
@@ -44,3 +45,18 @@ class Email:
                   'text': "Test, this is the text part.",
                   'html': params.content
                   })
+        if full_email.status_code == requests.codes.ok:
+            try:
+                return full_email
+            except Exception as error:
+                print(error)
+                return requests.post(
+                    self.endpoint,
+                    auth=('api', self.api_key),
+                    data={'from': params.sender,
+                          'to': 'oimartin1015@gmail.com',
+                          'subject': 'Could not update user',
+                          'text':
+                          "Could not send an update email to user."
+                          })
+                sys.exit(1)
