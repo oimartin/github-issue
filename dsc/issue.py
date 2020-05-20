@@ -1,4 +1,4 @@
-from github import Github, Issue
+import github
 from dataclasses import dataclass
 import mistune
 import sys
@@ -10,17 +10,29 @@ class GithubIssue():
     repository: str
     organization: str
 
-    def __post_init__(self) -> None:
-        try:
-            self.connect = Github(self.token)
-            self.repo_obj = self.connect.get_repo(
-                f'{self.organization}/{self.repository}'
-            )
-        except AssertionError as error:
-            print(error)
-            sys.exit("Check provided token, repository, and organization.")
+    def __post_init__(self):
 
-    def issue(self, issueid: int) -> Issue.Issue:
+        try:
+            self.connect = github.Github(self.token)
+        except github.BadCredentialsException as badcred:
+            print(
+                f"""GitHub error status: {badcred.status}
+                GitHub error data: {badcred.data}""")
+            sys.exit("Check token used to connect to GitHub.")
+        else:
+            try:
+                self.repo_obj = self.connect.get_repo(
+                    f'{self.organization}/{self.repository}'
+                )
+            except github.BadAttributeException as badattr:
+                print(
+                    f"""GitHub error value: {badattr.actual_value}
+                    PyGithub expected type: {badattr.expected_type}
+                    PyGithb exception: {badattr.transformation_exception}""")
+                sys.exit(
+                    "Check the organization and repository used to connect to GitHub.")
+
+    def issue(self, issueid: int) -> github.Issue.Issue:
         try:
             return self.repo_obj.get_issue(number=issueid)
         except IssueIdError as error:
