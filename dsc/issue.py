@@ -2,6 +2,8 @@ import github
 from dataclasses import dataclass
 import mistune
 import sys
+import traceback
+import logging
 
 
 @dataclass(init=True)
@@ -15,28 +17,20 @@ class GithubIssue():
         try:
             self.connect = github.Github(self.token)
         except github.BadCredentialsException:
-            sys.exit()
+            sys.exit(1)
         else:
             try:
                 self.repo_obj = self.connect.get_repo(
                     f'{self.organization}/{self.repository}'
                 )
-            except github.BadAttributeException as badattr:
-                print(
-                    f"""GitHub error value: {badattr.actual_value}.
-                    Pyithub expected type: {badattr.expected_type}.
-                    PyGithb exception: {badattr.transformation_exception}.""")
-                sys.exit()
+            except github.BadAttributeException:
+                sys.exit(1)
 
     def issue(self, issueid: int) -> github.Issue.Issue:
         try:
             return self.repo_obj.get_issue(number=issueid)
-        except github.BadAttributeException as badattr:
-            print(
-                f"""GitHub error value: {badattr.actual_value}.
-                  PyGithub expected type: {badattr.expected_type}.
-                  PyGithb exception: {badattr.transformation_exception}.""")
-            sys.exit()
+        except github.BadAttributeException:
+            sys.exit(1)
 
     def body(self, issueid: int) -> str:
         try:
@@ -45,14 +39,14 @@ class GithubIssue():
             print(
                 f"""GitHub error status: {gitexcept.status}
                 GitHub error data: {gitexcept.data}""")
-            sys.exit()
+            sys.exit(1)
 
     def html(self, issueid: int) -> str:
         try:
             self.body(issueid) == str
         except AttributeError as error:
             print(error)
-            sys.exit()
+            sys.exit(1)
         else:
             try:
                 mistune.html(self.body(issueid))[:5] == '<html>'
@@ -60,7 +54,7 @@ class GithubIssue():
                 print(error)
                 with open("mistune_output_error.txt", 'w') as f:
                     f.write(mistune.html(self.body(issueid)))
-                sys.exit()
+                sys.exit(1)
             else:
                 return mistune.html(self.body(issueid))
 
