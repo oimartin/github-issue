@@ -1,5 +1,6 @@
 from html.parser import HTMLParser
 from dsc.params import OrderInfo
+import sys
 
 
 class InvoiceHTMLParser(HTMLParser):
@@ -53,7 +54,11 @@ class InvoiceHTMLParser(HTMLParser):
 
     def get_order_id(self) -> str:
         """Retrieve order id."""
-        return self.order_id.strip()
+        if self.order_id.strip().isdigit() is True:
+            return self.order_id.strip()
+        else:
+            print('Check issue body used')
+            sys.exit(1)
 
     def get_user_name(self) -> str:
         """Retrieve user shipping name."""
