@@ -54,11 +54,12 @@ class InvoiceHTMLParser(HTMLParser):
 
     def get_order_id(self) -> str:
         """Retrieve order id."""
-        if self.order_id.strip().isdigit() is True:
-            return self.order_id.strip()
-        else:
-            print('Check issue body used')
+        if self.order_id.strip().isdigit() is False:
+            raise ValueError(
+                'Could not retrieve order id from html issue body.')
             sys.exit(1)
+        else:
+            return self.order_id.strip()
 
     def get_user_name(self) -> str:
         """Retrieve user shipping name."""
@@ -66,11 +67,21 @@ class InvoiceHTMLParser(HTMLParser):
 
     def get_shipping_email(self) -> str:
         """Retrieve shipping email."""
-        return self._shipto_email.strip()
+        if '@' in self._user_name.strip() is False:
+            raise ValueError(
+                'Could not retrieve shipping email from html issue body.')
+            sys.exit(1)
+        else:
+            return self._shipto_email.strip()
 
     def get_consumer_email(self) -> str:
         """Retrieve consumer email."""
-        return self._consumer_email.strip()
+        if '@' in self._consumer_email.strip() is False:
+            raise ValueError(
+                'Could not retrieve consumer email from html issue body.')
+            sys.exit(1)
+        else:
+            return self._consumer_email.strip()
 
     def get_all_order_info(self) -> OrderInfo:
         """Retrieve all info for order."""
