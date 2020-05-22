@@ -1,7 +1,6 @@
 import github
 from dataclasses import dataclass
 import mistune
-import sys
 
 
 @dataclass(init=True)
@@ -20,10 +19,10 @@ class GithubIssue():
             self.repo_obj = self.connect.get_repo(
                 f'{self.organization}/{self.repository}'
             )
-        except (github.BadCredentialsException,
-                github.BadAttributeException) as error:
-            print(error)
-            sys.exit(1)
+        except github.BadCredentialsException as badcred:
+            raise badcred
+        except github.BadAttributeException as badattr:
+            raise badattr
 
     def issue(self, issueid: int) -> github.Issue.Issue:
         """Get Github issue.
@@ -36,8 +35,8 @@ class GithubIssue():
         """
         try:
             return self.repo_obj.get_issue(number=issueid)
-        except github.BadAttributeException:
-            sys.exit(1)
+        except github.BadAttributeException as badattr:
+            raise badattr
 
     def body(self, issueid: int) -> str:
         """Get the body of the specific issue.
@@ -50,9 +49,8 @@ class GithubIssue():
         """
         try:
             return self.issue(issueid).body
-        except github.BadAttributeException as error:
-            print(error)
-            sys.exit(1)
+        except github.BadAttributeException as badattr:
+            raise badattr
 
     def html(self, issueid: int) -> str:
         """Create html string of specific issue body.
@@ -66,14 +64,12 @@ class GithubIssue():
         try:
             self.body(issueid) == str
         except AttributeError as error:
-            print(error)
-            sys.exit(1)
+            raise error
         else:
             try:
-                mistune.html(self.body(issueid))[:5] == '<html>'
+                mistune.html(self.body(issueid))[0] == '<'
             except MistuneError as error:
-                print(error)
-                sys.exit(1)
+                raise error
             else:
                 return mistune.html(self.body(issueid))
 
