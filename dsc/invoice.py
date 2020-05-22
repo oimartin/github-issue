@@ -1,6 +1,5 @@
 from html.parser import HTMLParser
 from dsc.params import OrderInfo
-import sys
 
 
 class InvoiceHTMLParser(HTMLParser):
@@ -57,7 +56,6 @@ class InvoiceHTMLParser(HTMLParser):
         if self.order_id.strip().isdigit() is False:
             raise ValueError(
                 'Could not retrieve order id from html issue body.')
-            sys.exit(1)
         else:
             return self.order_id.strip()
 
@@ -70,7 +68,6 @@ class InvoiceHTMLParser(HTMLParser):
         if '@' in self._user_name.strip() is False:
             raise ValueError(
                 'Could not retrieve shipping email from html issue body.')
-            sys.exit(1)
         else:
             return self._shipto_email.strip()
 
@@ -79,7 +76,6 @@ class InvoiceHTMLParser(HTMLParser):
         if '@' in self._consumer_email.strip() is False:
             raise ValueError(
                 'Could not retrieve consumer email from html issue body.')
-            sys.exit(1)
         else:
             return self._consumer_email.strip()
 

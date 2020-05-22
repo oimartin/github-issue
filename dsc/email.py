@@ -2,7 +2,6 @@ import requests
 from dsc.params import SendEmailParams
 from dataclasses import dataclass
 from string import Template
-import sys
 
 
 @dataclass
@@ -59,4 +58,3 @@ class Email:
                           'text':
                           "Could not send an update email to user."
                           })
-
