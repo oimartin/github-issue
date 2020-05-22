@@ -59,4 +59,4 @@ class Email:
                           'text':
                           "Could not send an update email to user."
                           })
-                sys.exit(1)
+
