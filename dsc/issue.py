@@ -10,7 +10,6 @@ class GithubIssue():
     token: str
     repository: str
     organization: str
-    label: str
 
     def __post_init__(self):
         """Take in Github token, repo and org."""
