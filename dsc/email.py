@@ -3,7 +3,6 @@ import requests.exceptions
 from dsc.params import SendEmailParams
 from dataclasses import dataclass
 from string import Template
-import collections
 
 
 @dataclass
@@ -37,9 +36,8 @@ class Email:
 
     def send(self, params: SendEmailParams) -> None:
         """Send email with mailgun API."""
-        emailing = collections.namedtuple('Emailing', ['mailgun', 'condition'])
         try:
-            return emailing(mailgun=requests.post(
+            return requests.post(
                 self.endpoint,
                 auth=('api', self.api_key),
                 data={'from': params.sender,
@@ -47,7 +45,7 @@ class Email:
                       'subject': params.subject,
                       'text': "Test, this is the text part.",
                       'html': params.content
-                      }), condition=True)
+                      })
         except ConnectionError as error:
             raise error
         except requests.exceptions.HTTPError as error:
