@@ -18,7 +18,13 @@ def main():
         repository=args.repository,
         organization=args.organization
     )
-    parser.feed(issue.html(args.issueid))
+    try:
+        parser.feed(issue.html(args.issueid))
+    except Exception:
+        issue.comment_status(args.issueid,
+                             'Could not send update email to user.')
+        issue.remove_label(args.issueid, args.label)
+        sys.exit('Could not send email to user.')
 
     file = os.path.join(TEMPLATE_FOLDER, 'update_template.html')
 
@@ -38,29 +44,29 @@ def main():
     template = EmailTemplate(message=content)
 
     email = Email(endpoint=args.endpoint, api_key=args.apikey)
-    result = email.send(SendEmailParams(
-        sender=args.sender,
-        to=parser.get_shipping_email(),
-        subject=template.generate_subject(
-            issue_id=parser.get_order_id(),
-            label=args.label
-        ),
-        content=template.generate_content(
-            user=parser.get_user_name(),
-            label=args.label,
-            issue_id=parser.get_order_id()
-        )
-    ))
 
-    if result.condition is True:
-        issue.comment_sent(args.issueid)
-    else:
-        issue.comment_error(args.issueid)
+    try:
+        email.send(SendEmailParams(
+            sender=args.sender,
+            to=parser.get_shipping_email(),
+            subject=template.generate_subject(
+                issue_id=parser.get_order_id(),
+                label=args.label
+            ),
+            content=template.generate_content(
+                user=parser.get_user_name(),
+                label=args.label,
+                issue_id=parser.get_order_id()
+            )
+        ))
+        issue.comment_status(args.issueid,
+                             'Successfully sent update email to user.')
+    except Exception:
+        issue.comment_status(args.issueid,
+                             'Could not send update email to user.')
         issue.remove_label(args.issueid, args.label)
+        sys.exit('Could not send email to user.')
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except SystemExit:
-        sys.exit()
+    main()
