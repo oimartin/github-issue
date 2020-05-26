@@ -21,6 +21,7 @@ class GithubIssue():
             )
         except github.BadCredentialsException as badcred:
             raise badcred
+
         except github.BadAttributeException as badattr:
             raise badattr
 
@@ -73,15 +74,10 @@ class GithubIssue():
             else:
                 return mistune.html(self.body(issueid))
 
-    def comment_sent(self, issueid: int) -> str:
-        return self.issue(issueid).create_comment(
-            'Successfully sent order update email.')
+    def comment_status(self, issueid: int, message: str) -> github.IssueComment.IssueComment:
+        return self.issue(issueid).create_comment(message)
 
-    def comment_error(self, issueid: int) -> str:
-        return self.issue(issueid).create_comment(
-            'Could not send order update email.')
-
-    def remove_label(self, issueid: int, label: str) -> str:
+    def remove_label(self, issueid: int, label: str) -> github.Label.Label:
         return self.issue(issueid).remove_from_labels(label)
 
 
