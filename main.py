@@ -38,7 +38,7 @@ def main():
     template = EmailTemplate(message=content)
 
     email = Email(endpoint=args.endpoint, api_key=args.apikey)
-    email.send(SendEmailParams(
+    result = email.send(SendEmailParams(
         sender=args.sender,
         to=parser.get_shipping_email(),
         subject=template.generate_subject(
@@ -52,6 +52,15 @@ def main():
         )
     ))
 
+    if result.condition is True:
+        issue.comment_sent(args.issueid)
+    else:
+        issue.comment_error(args.issueid)
+        issue.remove_label(args.issueid, args.label)
+
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except SystemExit:
+        sys.exit()

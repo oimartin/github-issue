@@ -10,6 +10,7 @@ class GithubIssue():
     token: str
     repository: str
     organization: str
+    label: str
 
     def __post_init__(self):
         """Take in Github token, repo and org."""
@@ -72,6 +73,17 @@ class GithubIssue():
                 raise error
             else:
                 return mistune.html(self.body(issueid))
+
+    def comment_sent(self, issueid: int) -> str:
+        return self.issue(issueid).create_comment(
+            'Successfully sent order update email.')
+
+    def comment_error(self, issueid: int) -> str:
+        return self.issue(issueid).create_comment(
+            'Could not send order update email.')
+
+    def remove_label(self, issueid: int, label: str) -> str:
+        return self.issue(issueid).remove_from_labels(label)
 
 
 class MistuneError(Exception):
