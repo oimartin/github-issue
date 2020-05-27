@@ -1,7 +1,8 @@
 import unittest
 from dsc.invoice import InvoiceHTMLParser
 import os
-from collections import namedtuple
+from dsc.params import OrderInfo
+
 
 TEST_FOLDER = os.path.join(os.path.dirname(__file__))
 
@@ -38,14 +39,11 @@ class TestInvoiceHTMLParser(unittest.TestCase):
             'David Knecht1')
 
     def test_all_order_info(self):
-        OrderParams = namedtuple('OrderParams',
-                                 ['order_id', 'user_name',
-                                  'shipping_email', 'consumer_email'])
-        self.assertTupleEqual(
+        self.assertEqual(
             self.parser.get_all_order_info(),
-            OrderParams(order_id='890348', user_name='David Knecht1',
-                        shipping_email='david.knecht@uconn.edu',
-                        consumer_email='abc@abc.edu')
+            OrderInfo(order_id='890348', user_name='David Knecht1',
+                      shipping_email='david.knecht@uconn.edu',
+                      consumer_email='abc@abc.edu')
         )
 
     def test_all(self):
