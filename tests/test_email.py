@@ -1,12 +1,12 @@
 from nose.tools import assert_is_not_none
 from unittest.mock import Mock, patch
-from info_email import Email
-from dsc.params import SendEmailParams
+from tests.info_email import send
+from tests.config import apikey
 
 
 @patch('dsc.email.requests.post')
 def test_send(mock_get):
 
     mock_get.return_value.ok = True
-    response = Email.send()
+    response = send(apikey)
     assert_is_not_none(response)
