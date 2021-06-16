@@ -1,7 +1,6 @@
 testing.ipynb
 .vscode/
 __pycache__/
-dsc/.mypy_chache/
 .mypy_cache/
 config.py
-dsc/__pycache__/__init__.pypy36.pyc
+
